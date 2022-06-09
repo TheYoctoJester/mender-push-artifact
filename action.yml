@@ -21,7 +21,6 @@ runs:
     - id: curl_version
       run: curl --version
       shell: bash
-    - id: get_access_token2
     - id: get_access_token
       run: echo "JWT=$(curl -s -X POST -u ${{ inputs.mender_user }}:${{ inputs.mender_password }} ${{ inputs.mender_uri }}/api/management/v1/useradm/auth/login)"
       shell: bash
