@@ -11,6 +11,7 @@ RUN yes | unminimize \
     ca-certificates \
     curl \
     locales \
+    sudo \
     && locale-gen en_US.UTF-8
 
 ENV LANG=en_US.UTF-8
