@@ -16,25 +16,5 @@ inputs:
     description: 'path of the artifact to be uploaded, relative to GITHUB_WORKSPACE'
     required: true
 runs:
-  using: "composite"
-  steps:
-    - id: get_access_token
-      run: JWT=$(curl -s -X POST -u ${{ inputs.mender_user }}:${{ inputs.mender_password }} ${{ inputs.mender_uri }}/api/management/v1/useradm/auth/login)
-      shell: bash
-    - id: show_environment
-      run: env
-      shell: bash
-    - id: show_GITHUB_WORKSPACE
-      run: tree $GITHUB_WORKSPACE
-      shell: bash
-    - id: upload_artifact
-      run: |
-        curl -s -X POST ${{ inputs.mender_uri }}/api/management/v1/deployments/artifacts \
-        -H 'Content-Type: multipart/form-data' \
-        -H 'Accept: application/json' \
-        -H "Authorization: Bearer ${JWT}" \
-        -F artifact=@${GITHUB_WORKSPACE}/${{ inputs.mender_artifact }}
-      shell: bash
-    - run: echo "GITHUB_WORKSPACE $GITHUB_WORKSPACE"
-      shell: bash
-      id: test_var_expansion
+  using: 'docker'
+  image: 'Dockerfile'
