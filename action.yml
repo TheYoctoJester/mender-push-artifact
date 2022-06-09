@@ -1,0 +1,37 @@
+# action.yml
+name: 'Upload mender artifact'
+description: 'Upload a mender artifact to a hosted Mender backend instance'
+inputs:
+  mender_user:
+    description: 'username for the hosted Mender backend account to be used'
+    required: true
+  mender_password:
+    description: 'password for the hosted Mender backend account to be used'
+    required: true
+  mender_uri:
+    description: 'URI for the hosted Mender backend account to be used'
+    required: false
+    default: 'https://hosted.mender.io'
+  mender_artifact:
+    description: 'path of the artifact to be uploaded, relative to GITHUB_WORKSPACE'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - id: get access token
+      run: JWT=$(curl -s -X POST -u ${{ inputs.mender_user }}:$${{ inputs.mender_password }} $${{ inputs.mender_uri }}/api/management/v1/useradm/auth/login)
+      shell: bash
+    - id: show environment
+      run: env
+      shell: bash
+    - id: show GITHUB_WORKSPACE
+      run: tree $GITHUB_WORKSPACE
+      shell: bash
+    - id: upload artifact
+      run: |
+        curl -s -X POST $${{ inputs.mender_uri }}/api/management/v1/deployments/artifacts \
+        -H 'Content-Type: multipart/form-data' \
+        -H 'Accept: application/json' \
+        -H "Authorization: Bearer $JWT" \
+        -F artifact=@$GITHUB_WORKSPACE/$${{ inputs.mender_artifact }}
+      shell: bash

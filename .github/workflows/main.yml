@@ -1,0 +1,15 @@
+on: [push]
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    name: Upload a dummy Mender artifact
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build and use mender-artifact container
+        id: artifact
+        uses: ./
+        with:
+          mender_user: ${{ secrets.MENDER_SERVER_USER }}
+          mender_password: ${{ secrets.MENDER_SERVER_PASSWORD }}
+          mender_artifact: test/assets/simpledummy_1.0.mender
