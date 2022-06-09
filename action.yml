@@ -29,9 +29,9 @@ runs:
       shell: bash
     - id: upload_artifact
       run: |
-        curl -s -X POST $${{ inputs.mender_uri }}/api/management/v1/deployments/artifacts \
+        curl -s -X POST ${{ inputs.mender_uri }}/api/management/v1/deployments/artifacts \
         -H 'Content-Type: multipart/form-data' \
         -H 'Accept: application/json' \
         -H "Authorization: Bearer $JWT" \
-        -F artifact=@$GITHUB_WORKSPACE/$${{ inputs.mender_artifact }}
+        -F artifact=@$GITHUB_WORKSPACE/${{ inputs.mender_artifact }}
       shell: bash
