@@ -35,3 +35,6 @@ runs:
         -H "Authorization: Bearer ${JWT}" \
         -F artifact=@${GITHUB_WORKSPACE}/${{ inputs.mender_artifact }}
       shell: bash
+    - run: echo "GITHUB_WORKSPACE $GITHUB_WORKSPACE ${GITHUB_WORKSPACE}"
+      shell: bash
+      id: test_var_expansion
