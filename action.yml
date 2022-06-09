@@ -18,16 +18,16 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - id: get access token
+    - id: get_access_token
       run: JWT=$(curl -s -X POST -u ${{ inputs.mender_user }}:$${{ inputs.mender_password }} $${{ inputs.mender_uri }}/api/management/v1/useradm/auth/login)
       shell: bash
-    - id: show environment
+    - id: show_environment
       run: env
       shell: bash
-    - id: show GITHUB_WORKSPACE
+    - id: show_GITHUB_WORKSPACE
       run: tree $GITHUB_WORKSPACE
       shell: bash
-    - id: upload artifact
+    - id: upload_artifact
       run: |
         curl -s -X POST $${{ inputs.mender_uri }}/api/management/v1/deployments/artifacts \
         -H 'Content-Type: multipart/form-data' \
