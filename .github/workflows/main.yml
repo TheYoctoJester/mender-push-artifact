@@ -6,7 +6,7 @@ jobs:
     name: Upload a dummy Mender artifact
     steps:
       - uses: actions/checkout@v3
-      - name: Build and use mender-artifact container
+      - name: push artifact to hosted Mender
         id: artifact
         uses: ./
         with:
