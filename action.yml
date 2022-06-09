@@ -21,12 +21,6 @@ runs:
     - id: get_access_token
       run: echo "JWT=$(curl -s -X POST -u ${{ inputs.mender_user }}:"${{ inputs.mender_password }}" ${{ inputs.mender_uri }}/api/management/v1/useradm/auth/login)" >> $GITHUB_ENV
       shell: bash
-    - id: show_environment
-      run: env
-      shell: bash
-    - id: show_GITHUB_WORKSPACE
-      run: tree $GITHUB_WORKSPACE
-      shell: bash
     - id: upload_artifact
       run: |
         curl -s -X POST ${{ inputs.mender_uri }}/api/management/v1/deployments/artifacts \
@@ -35,6 +29,3 @@ runs:
         -H "Authorization: Bearer ${{ env.JWT }}" \
         -F artifact=@${GITHUB_WORKSPACE}/${{ inputs.mender_artifact }}
       shell: bash
-    - run: echo "GITHUB_WORKSPACE $GITHUB_WORKSPACE"
-      shell: bash
-      id: test_var_expansion
