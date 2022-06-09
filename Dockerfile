@@ -10,6 +10,7 @@ RUN yes | unminimize \
     && install-packages \
     ca-certificates \
     curl \
+    locales \
     && locale-gen en_US.UTF-8
 
 ENV LANG=en_US.UTF-8
