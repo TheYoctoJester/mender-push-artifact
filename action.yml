@@ -19,7 +19,9 @@ runs:
   using: "composite"
   steps:
     - id: get_access_token
-      run: echo "::set-output name=MENDER_TOKEN::$(curl -s -X POST -u ${{ inputs.mender_user }}:"${{ inputs.mender_password }}" ${{ inputs.mender_uri }}/api/management/v1/useradm/auth/login)"
+      run: |
+        MENDER_TOKEN=$(curl -s -X POST -u ${{ inputs.mender_user }}:"${{ inputs.mender_password }}" ${{ inputs.mender_uri }}/api/management/v1/useradm/auth/login) && \
+        echo "::set-output name=MENDER_TOKEN::${MENDER_TOKEN}"
       shell: bash
     - id: upload_artifact
       run: |
