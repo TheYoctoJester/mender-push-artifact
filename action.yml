@@ -20,7 +20,7 @@ runs:
   steps:
     - id: get_access_token
       run: |
-        MENDER_TOKEN=$(curl -s -X POST -u ${{ inputs.mender_user }}:"${{ inputs.mender_password }}a" ${{ inputs.mender_uri }}/api/management/v1/useradm/auth/login); \
+        MENDER_TOKEN=$(curl -s -X POST -u ${{ inputs.mender_user }}:"${{ inputs.mender_password }}" ${{ inputs.mender_uri }}/api/management/v1/useradm/auth/loginl); \
         echo "curl result 1: $?"; \
         if [ "$?" -ne "0" ]; then echo eek1; exit $?; fi && \
         echo "::set-output name=MENDER_TOKEN::${MENDER_TOKEN}"
