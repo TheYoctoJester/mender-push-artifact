@@ -19,13 +19,15 @@ runs:
   using: "composite"
   steps:
     - id: get_access_token
-      run: echo "JWT=$(curl -s -X POST -u ${{ inputs.mender_user }}:"${{ inputs.mender_password }}" ${{ inputs.mender_uri }}/api/management/v1/useradm/auth/login)" >> $GITHUB_ENV
+      run: |
+        MENDER_TOKEN=$(curl -s -X POST -u ${{ inputs.mender_user }}:"${{ inputs.mender_password }}" ${{ inputs.mender_uri }}/api/management/v1/useradm/auth/login) && \
+        echo "::set-output name=MENDER_TOKEN::${MENDER_TOKEN}"
       shell: bash
     - id: upload_artifact
       run: |
         curl -s -X POST ${{ inputs.mender_uri }}/api/management/v1/deployments/artifacts \
         -H 'Content-Type: multipart/form-data' \
         -H 'Accept: application/json' \
-        -H "Authorization: Bearer ${{ env.JWT }}" \
+        -H "Authorization: Bearer ${{ steps.get_access_token.outputs.MENDER_TOKEN }}" \
         -F artifact=@${GITHUB_WORKSPACE}/${{ inputs.mender_artifact }}
       shell: bash
