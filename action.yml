@@ -20,7 +20,8 @@ runs:
   steps:
     - id: get_access_token
       run: |
-        MENDER_TOKEN=$(curl -s -X POST -u ${{ inputs.mender_user }}:"${{ inputs.mender_password }}" ${{ inputs.mender_uri }}/api/management/v1/useradm/auth/login) && \
+        MENDER_TOKEN=$(curl -s -X POST -u ${{ inputs.mender_user }}:"${{ inputs.mender_password }}a" ${{ inputs.mender_uri }}/api/management/v1/useradm/auth/login); \
+        if [ "$?" -ne "0" ]; then exit $?; fi && \
         echo "::set-output name=MENDER_TOKEN::${MENDER_TOKEN}"
       shell: bash
     - id: upload_artifact
@@ -29,5 +30,6 @@ runs:
         -H 'Content-Type: multipart/form-data' \
         -H 'Accept: application/json' \
         -H "Authorization: Bearer ${{ steps.get_access_token.outputs.MENDER_TOKEN }}" \
-        -F artifact=@${GITHUB_WORKSPACE}/${{ inputs.mender_artifact }}
+        -F artifact=@${GITHUB_WORKSPACE}/${{ inputs.mender_artifact }}; \
+        if [ "$?" -ne "0" ]; then exit $?; fi
       shell: bash
