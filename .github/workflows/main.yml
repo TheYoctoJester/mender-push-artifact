@@ -10,6 +10,5 @@ jobs:
         id: artifact
         uses: ./
         with:
-          mender_user: ${{ secrets.MENDER_SERVER_USER }}
-          mender_password: ${{ secrets.MENDER_SERVER_PASSWORD }}
+          mender_pat: ${{ secrets.MENDER_PERSONAL_ACCESS_TOKEN }}
           mender_artifact: test/assets/simpledummy_1.0.mender

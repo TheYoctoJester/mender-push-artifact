@@ -2,11 +2,8 @@
 name: 'Upload mender artifact'
 description: 'Upload a mender artifact to a hosted Mender backend instance'
 inputs:
-  mender_user:
-    description: 'username for the hosted Mender backend account to be used'
-    required: true
-  mender_password:
-    description: 'password for the hosted Mender backend account to be used'
+  mender_pat:
+    description: 'personal access token for the hosted Mender backend account to be used'
     required: true
   mender_uri:
     description: 'URI for the hosted Mender backend account to be used'
@@ -18,16 +15,11 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - id: get_access_token
-      run: |
-        MENDER_TOKEN=$(curl -s -X POST -u ${{ inputs.mender_user }}:"${{ inputs.mender_password }}" ${{ inputs.mender_uri }}/api/management/v1/useradm/auth/login) && \
-        echo "::set-output name=MENDER_TOKEN::${MENDER_TOKEN}"
-      shell: bash
     - id: upload_artifact
       run: |
         curl -s -X POST ${{ inputs.mender_uri }}/api/management/v1/deployments/artifacts \
         -H 'Content-Type: multipart/form-data' \
         -H 'Accept: application/json' \
-        -H "Authorization: Bearer ${{ steps.get_access_token.outputs.MENDER_TOKEN }}" \
+        -H "Authorization: Bearer ${{ inputs.mender_pat }}" \
         -F artifact=@${GITHUB_WORKSPACE}/${{ inputs.mender_artifact }}
       shell: bash

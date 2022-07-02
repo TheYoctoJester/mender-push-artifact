@@ -6,16 +6,13 @@ A GitHub action to push your artifacts to a hosted Mender instance.
 
 The action supports uploading all artifact versions (v1, v2, v3) to an arbitrary hosted Mender instance.
 
-Limitations:
-- SSO accounts are not supported yet
-- 2FA is not supported yet
+A "personal access token" are used as authentication mechanism. Please read [the documentation](https://docs.mender.io/server-integration/using-the-apis#personal-access-tokens) on how to create one for your Github Actions pipeline setup.
 
 ## Usage
 
 This action require the following inputs:
 
-- `mender_user`: username on the hosted Mender instance to be used
-- `mender_password`: password on the hosted Mender instance to be used
+- `mender_pat`: personal access token on the hosted Mender instance to be used
 - `mender_artifact`: path ot the artifact to be uploaded, relative to `GITHUB_WORKSPACE`
 - *artifact*: a `.mender` artifact file, placed in the `GITHUB_WORKSPACE` directory hierarchy
 
